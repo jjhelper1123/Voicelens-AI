@@ -1,0 +1,6 @@
+{
+  "name": "VoiceLens AI",
+  "description": "An empowering AI reading assistant for low-vision and accessibility needs.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
