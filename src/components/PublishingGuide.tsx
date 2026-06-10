@@ -177,6 +177,29 @@ export default function PublishingGuide({ onClose }: PublishingGuideProps) {
           </div>
         </section>
 
+        <section className="bg-slate-900 border-l-8 border-pink-500 p-10 rounded-3xl">
+          <div className="flex items-center gap-4 mb-6">
+            <ExternalLink size={48} className="text-pink-400" />
+            <h3 className="text-6xl font-black text-white">5. Marketing Pack</h3>
+          </div>
+          <div className="space-y-6">
+            <p className="text-3xl leading-snug font-bold text-slate-300">
+              I have updated your <span className="text-pink-400">App Manifest</span> with all <span className="text-white">7 screenshots</span> you provided.
+            </p>
+            <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+              <p className="text-2xl font-bold text-white mb-2 underline">IMPORTANT INSTRUCTIONS:</p>
+              <ol className="list-decimal list-inside text-xl text-slate-400 space-y-2">
+                <li>Download your app as a <span className="text-white">ZIP</span>.</li>
+                <li>Rename your 7 screenshots locally to <span className="text-pink-400 font-mono">screenshot1.png</span> through <span className="text-pink-400 font-mono">screenshot7.png</span>.</li>
+                <li>Place them inside the <span className="text-white">/public</span> folder before downloading your ZIP or uploading to the store.</li>
+              </ol>
+            </div>
+            <p className="text-2xl text-slate-500 italic mt-4">
+              This ensures your app looks professional on the Google Play Store and when users install it on their phones.
+            </p>
+          </div>
+        </section>
+
         <div className="bg-white/5 p-8 rounded-3xl border border-white/10 mt-8">
             <div className="flex items-center gap-4 mb-4">
                 <Info size={32} className="text-slate-400" />

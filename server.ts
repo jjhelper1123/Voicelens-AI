@@ -88,16 +88,33 @@ app.post('/api/analyze', async (req, res) => {
     
     let statusCode = 500;
     
-    // Handle specific Gemini error codes
-    if (message.includes('429') || message.includes('Too Many Requests') || message.includes('quota')) {
+    // Create a composite lowercased string of the error to catch status/code/message/JSON fields
+    const errorStr = `${message} ${error.status || ''} ${error.code || ''} ${typeof error === 'object' ? JSON.stringify(error) : ''}`.toLowerCase();
+
+    // Handle specific Gemini error codes and statuses
+    if (
+      errorStr.includes('429') || 
+      errorStr.includes('too many requests') || 
+      errorStr.includes('quota') || 
+      errorStr.includes('exhausted') || 
+      errorStr.includes('rate-limit') || 
+      errorStr.includes('limit')
+    ) {
       message = "Service is currently very busy (Quota reached). Please wait a moment and try again.";
       statusCode = 429;
-    } else if (message.includes('503') || message.includes('Service Unavailable') || message.includes('overloaded')) {
-      message = "The reading assistant is currently overloaded. Please try again in 30 seconds.";
+    } else if (
+      errorStr.includes('503') || 
+      errorStr.includes('service unavailable') || 
+      errorStr.includes('overloaded') || 
+      errorStr.includes('unavailable') || 
+      errorStr.includes('demand') || 
+      errorStr.includes('temporary')
+    ) {
+      message = "The reading assistant is currently experiencing high demand. Please try again in 30 seconds.";
       statusCode = 503;
-    } else if (message.includes('API_KEY') || message.includes('apiKey')) {
+    } else if (errorStr.includes('api_key') || errorStr.includes('apikey')) {
       message = "Settings error: The AI key is missing. Please contact support or check your app settings.";
-    } else if (message.includes('deadline') || message.includes('timeout')) {
+    } else if (errorStr.includes('deadline') || errorStr.includes('timeout')) {
       message = "The connection timed out. Please check your internet and try again.";
     }
 
@@ -106,6 +123,11 @@ app.post('/api/analyze', async (req, res) => {
 });
 
 async function startServer() {
+  // Check for API key on startup
+  if (!process.env.GEMINI_API_KEY) {
+    console.warn('WARNING: GEMINI_API_KEY is not set. AI features will be disabled.');
+  }
+
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
